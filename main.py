@@ -1,12 +1,13 @@
 from drawable import drawable
 import pygame as pg
+import random as rand
 pg.init()
 WIDTH, HEIGHT = 640, 700
 win = pg.display.set_mode(size=(WIDTH, HEIGHT))
 
 sheet = pg.image.load("minesweeper-sprites.png")
 timer_numbers = [pg.surface.Surface((13, 23)) for x in range(11)]
-
+first = True
 for x in range(11):
     timer_numbers[x].blit(sheet, sheet.get_rect(x=-x * 14))
     timer_numbers[x] = drawable(timer_numbers[x], timer_numbers[x].get_rect(y=x * 24))
@@ -90,9 +91,20 @@ def translate_flags(flags_display):
             if box.flag:
                 flags_left -= 1
     translate(flags_left, flags_display)
-
+first = True
 def BoardGen():
-    Board = [[] for x in range(10)]
+    Board = [[0 for i in range(10)] for x in range(10)]
+    for b in range(10):
+        row = rand.randint(0, 9)
+        col = rand.randint(0, 9)
+        Board[row][col] = 654
+    #bombs have been generated
+    row = 0
+    col = 0
+    for imsleepy in range(10):
+        pass
+
+
 #www.scratch.mit.edu
 smile = faces[0]
 smile.rect.x = XOFFSET + 65
@@ -112,6 +124,15 @@ while play:
                     elif tile.flag:
                         tile.surface = symbols[0].surface.copy()
                         tile.flag = False
+            elif e.button==1:
+                tile = find_tile(e.pos)
+                if first:
+                    BoardGen()
+                    first = False
+                if tile:
+                    pass  #die u have no freinds
+                else:
+                    pass #boardgen is gonna add a number/bomb to each tile it represents the index of the symbol we need to load
         if e.type==pg.QUIT:
             play=False
     time = pg.time.get_ticks()// 1000
