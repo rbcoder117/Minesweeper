@@ -97,13 +97,17 @@ def BoardGen():
     for b in range(10):
         row = rand.randint(0, 9)
         col = rand.randint(0, 9)
-        Board[row][col] = 654
+        Board[row][col] = 1
     #bombs have been generated
     row = 0
     col = 0
-    for imsleepy in range(10):
-        pass
-
+    for row in range(10):
+        for col in range(10):
+            Main_grid[row][col].clicked = False
+            if Board[row][col] == 1:
+                Main_grid[row][col].bomb = True
+            else:
+                Main_grid[row][col].bomb = False
 
 #www.scratch.mit.edu
 smile = faces[0]
@@ -129,8 +133,10 @@ while play:
                 if first:
                     BoardGen()
                     first = False
-                if tile:
-                    pass  #die u have no freinds
+                if tile !=None and tile.bomb and tile.clicked == False:
+                    print("U are winning")  #i have no freinds and no life
+                    tile.surface = symbols[5].surface.copy()
+                    tile.clicked = True
                 else:
                     pass #boardgen is gonna add a number/bomb to each tile it represents the index of the symbol we need to load
         if e.type==pg.QUIT:
@@ -139,6 +145,7 @@ while play:
     translate_timer(time, timer_display)
     translate_flags(flags_display)
     draw(win, *([item for row in Main_grid for item in row]), *flags_display, smile, *timer_display)
+
 #todo
 '''
 -if take more than 1000 seconds write imagine bieng slow examaple is in files as check todo
