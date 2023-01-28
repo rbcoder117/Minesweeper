@@ -115,6 +115,21 @@ smile.rect.x = XOFFSET + 65
 smile.rect.y = YOFFSET -30
 
 
+def temp(pos):
+    tile = find_tile(pos)
+    if tile != None and not tile.bomb:
+        bombcount = 0
+        tn = [[-16, 0], [0, -16], [16, 0], [0, 16], [-16, 16], [-16, -16], [16, -16], [16, 16]]
+        for mods in tn:
+            npos = (pos[0] + mods[0], pos[1] + mods[1])
+            neighbor = find_tile(npos)
+            if neighbor != None:
+                bombcount += 1 if neighbor.bomb else 0
+        print(bombcount)
+        if bombcount == 0:
+            tile.surface = symbols[1].surface.copy()
+        else:
+            tile.surface = numbers[bombcount - 1].surface.copy()
 play=True
 while play:
     for e in pg.event.get():
@@ -137,8 +152,22 @@ while play:
                     print("U are winning")  #i have no freinds and no life
                     tile.surface = symbols[5].surface.copy()
                     tile.clicked = True
-                else:
-                    pass #boardgen is gonna add a number/bomb to each tile it represents the index of the symbol we need to load
+                elif tile !=None and not tile.bomb:
+                    bombcount = 0
+                    tn = [[-16, 0], [0, -16], [16, 0], [0, 16], [-16, 16], [-16, -16], [16, -16], [16,16]]
+                    for mods in tn:
+                        npos = (e.pos[0]+mods[0], e.pos[1]+mods[1])
+                        neighbor = find_tile(npos)
+                        if neighbor != None:
+                            bombcount +=1 if neighbor.bomb else 0
+                    print(bombcount)
+                    if bombcount == 0:
+                        tile.surface = symbols[1].surface.copy()
+                        for f in tn:
+                            temp((e.pos[0]+f[0], e.pos[1]+f[1]))
+                    else:
+                        tile.surface = numbers[bombcount-1].surface.copy()
+
         if e.type==pg.QUIT:
             play=False
     time = pg.time.get_ticks()// 1000
@@ -146,11 +175,15 @@ while play:
     translate_flags(flags_display)
     draw(win, *([item for row in Main_grid for item in row]), *flags_display, smile, *timer_display)
 
+
 #todo
 '''
 -if take more than 1000 seconds write imagine bieng slow examaple is in files as check todo
--board generation
--no bomb at start
+-board generation ✅
+-use find_tile(e.pos) to find tile you clicked, and edit e.pos to find tiles adjacent (nearby) it
+-
+-
+-
 -
 -
 -
