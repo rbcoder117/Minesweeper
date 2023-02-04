@@ -117,9 +117,9 @@ smile.rect.y = YOFFSET -30
 
 def temp(pos):
     tile = find_tile(pos)
-    if tile != None and not tile.bomb:
+    if tile != None and not tile.bomb and not tile.clicked:
         bombcount = 0
-        tn = [[-16, 0], [0, -16], [16, 0], [0, 16], [-16, 16], [-16, -16], [16, -16], [16, 16]]
+        tn = [[-18, 0], [0, -18], [18, 0], [0, 18], [-18, 18], [-18, -18], [18, -18], [18, 18]]
         for mods in tn:
             npos = (pos[0] + mods[0], pos[1] + mods[1])
             neighbor = find_tile(npos)
@@ -128,6 +128,9 @@ def temp(pos):
         print(bombcount)
         if bombcount == 0:
             tile.surface = symbols[1].surface.copy()
+            tile.clicked = True
+            for f in tn:
+                temp((pos[0] + f[0], pos[1] + f[1]))
         else:
             tile.surface = numbers[bombcount - 1].surface.copy()
 play=True
@@ -154,7 +157,7 @@ while play:
                     tile.clicked = True
                 elif tile !=None and not tile.bomb:
                     bombcount = 0
-                    tn = [[-16, 0], [0, -16], [16, 0], [0, 16], [-16, 16], [-16, -16], [16, -16], [16,16]]
+                    tn = [[-18, 0], [0, -18], [18, 0], [0, 18], [-18, 18], [-18, -18], [18, -18], [18, 18]]
                     for mods in tn:
                         npos = (e.pos[0]+mods[0], e.pos[1]+mods[1])
                         neighbor = find_tile(npos)
