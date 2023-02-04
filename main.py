@@ -133,6 +133,7 @@ def temp(pos):
                 temp((pos[0] + f[0], pos[1] + f[1]))
         else:
             tile.surface = numbers[bombcount - 1].surface.copy()
+lol = 0 # number of bombs clicked
 play=True
 while play:
     for e in pg.event.get():
@@ -153,6 +154,7 @@ while play:
                     first = False
                 if tile !=None and tile.bomb and tile.clicked == False:
                     print("U are winning")  #i have no freinds and no life
+                    lol += 1
                     tile.surface = symbols[5].surface.copy()
                     tile.clicked = True
                 elif tile !=None and not tile.bomb:
@@ -170,8 +172,7 @@ while play:
                             temp((e.pos[0]+f[0], e.pos[1]+f[1]))
                     else:
                         tile.surface = numbers[bombcount-1].surface.copy()
-
-        if e.type==pg.QUIT:
+        if e.type==pg.QUIT or lol == 10:
             play=False
     time = pg.time.get_ticks()// 1000
     translate_timer(time, timer_display)
